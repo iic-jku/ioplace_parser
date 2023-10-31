@@ -1,4 +1,5 @@
 PYTHON3 ?= python3
+ANTLR4 ?= antlr4
 REQ_FILES = ./requirements_dev.txt ./requirements.txt
 REQ_FILES_PFX = $(addprefix -r ,$(REQ_FILES))
 
@@ -16,7 +17,7 @@ lint: venv/manifest.txt
 
 antlr: _ioplace_parser_antlr/ioParser.py
 _ioplace_parser_antlr/ioParser.py: ioLexer.g io.g
-	antlr4 -Dlanguage=Python3 -o $(@D) $^
+	$(ANTLR4) -Dlanguage=Python3 -o $(@D) $^
 
 venv: venv/manifest.txt
 venv/manifest.txt: $(REQ_FILES)

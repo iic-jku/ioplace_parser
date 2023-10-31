@@ -16,7 +16,7 @@ with pkgs; with python3.pkgs; buildPythonPackage rec {
   PIP_DISABLE_PIP_VERSION_CHECK = "1";
 
   nativeBuildInputs = [
-    antlr4
+    antlr4_10
     black
   ];
 
