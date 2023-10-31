@@ -1,0 +1,10 @@
+[run]
+source = ioplace_parser
+
+[report]
+include =
+    ioplace_parser/*
+omit =
+    /nix/*
+    venv/*
+    */_antlr/*
