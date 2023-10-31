@@ -26,7 +26,7 @@ print("Getting tags…")
 
 latest_tag = None
 latest_tag_commit = None
-tags = [pair[1] for pair in gh.volare.tags]
+tags = [pair[1] for pair in gh.ioplace_parser.tags]
 
 tag_exists = ioplace_parser.__version__ in tags
 
