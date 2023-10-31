@@ -16,7 +16,7 @@ lint: venv/manifest.txt
 
 antlr: _ioplace_parser_antlr/ioParser.py
 _ioplace_parser_antlr/ioParser.py: ioLexer.g io.g
-	antlr -Dlanguage=Python3 -o $(@D) $^
+	antlr4 -Dlanguage=Python3 -o $(@D) $^
 
 venv: venv/manifest.txt
 venv/manifest.txt: $(REQ_FILES)
