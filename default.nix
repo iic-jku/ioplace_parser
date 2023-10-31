@@ -3,7 +3,22 @@
   gitignore-src ? import ./nix/gitignore.nix { inherit pkgs; },
 }:
 
-with pkgs; with python3.pkgs; buildPythonPackage rec {
+with pkgs; with python3.pkgs; let
+  antlr4_10-python3-runtime = buildPythonPackage rec {
+    pname = "antlr4-python3-runtime";
+    inherit (antlr4_10.runtime.cpp) version src;
+
+    sourceRoot = "source/runtime/Python3";
+    
+    doCheck = false;
+
+    meta = with lib; {
+      description = "Runtime for ANTLR";
+      homepage = "https://www.antlr.org/";
+      license = licenses.bsd3;
+    };
+  };
+in buildPythonPackage rec {
   name = "ioplace_parser";
 
   version_file = builtins.readFile ./ioplace_parser/__version__.py;
@@ -16,7 +31,7 @@ with pkgs; with python3.pkgs; buildPythonPackage rec {
   PIP_DISABLE_PIP_VERSION_CHECK = "1";
 
   nativeBuildInputs = [
-    antlr4_11
+    antlr4_10
     black
   ];
 
@@ -25,6 +40,6 @@ with pkgs; with python3.pkgs; buildPythonPackage rec {
   '';
 
   propagatedBuildInputs = [
-    antlr4-python3-runtime
+    antlr4_10-python3-runtime
   ];
 }
