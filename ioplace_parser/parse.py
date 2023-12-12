@@ -140,7 +140,6 @@ def parse(string: str):
     for side in ["N", "E", "W", "S"]:
         if side in sides_info:
             continue
-        print(listener.global_min_distance)
         sides_info[side] = Side(
             min_distance=listener.global_min_distance,
             reverse_result=False,
