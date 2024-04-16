@@ -1,9 +1,12 @@
 {
-  pkgs? import <nixpkgs> {},
-  gitignore-src ? import ./nix/gitignore.nix { inherit pkgs; },
+  antlr4_10,
+  black,
+  lib,
+  nix-gitignore,
+  buildPythonPackage,
 }:
 
-with pkgs; with python3.pkgs; let
+let
   antlr4_10-python3-runtime = buildPythonPackage rec {
     pname = "antlr4-python3-runtime";
     inherit (antlr4_10.runtime.cpp) version src;
@@ -25,7 +28,7 @@ in buildPythonPackage rec {
   version_list = builtins.match ''.+''\n__version__ = "([^"]+)"''\n.+''$'' version_file;
   version = builtins.head version_list;
 
-  src = gitignore-src.gitignoreSource ./.;
+  src = nix-gitignore.gitignoreSourcePure ./.gitignore ./.;
 
   doCheck = false;
   PIP_DISABLE_PIP_VERSION_CHECK = "1";
@@ -36,7 +39,7 @@ in buildPythonPackage rec {
   ];
 
   preBuild = ''
-  make antlr
+    make antlr
   '';
 
   propagatedBuildInputs = [
