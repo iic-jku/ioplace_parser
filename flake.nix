@@ -41,8 +41,8 @@
       callPythonPackage = pkgs.lib.callPackageWith (pkgs // pkgs.python3.pkgs // self.packages.${pkgs.system});
     in
       rec {
-        ioplace_parser = callPythonPackage ./default.nix {};
-        default = ioplace_parser;
+        ioplace-parser = callPythonPackage ./default.nix {};
+        default = ioplace-parser;
       }
     );
   };
