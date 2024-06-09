@@ -8,8 +8,22 @@ Identifier: Nondigit (Nondigit | Digit)*;
 At: '@';
 Hash: '#';
 Equal: '=';
+Regex:
+	'^'? (
+		Digit
+		| Nondigit
+		| '.'
+		| '+'
+		| '*'
+		| '?'
+		| '\\'
+		| '['
+		| ']'
+		| '('
+		| ')'
+		| '|'
+	)+ '$'?;
 Dollar: '$';
-Regex: ( Digit | Nondigit | '.' | '*' | '\\' | '[' | ']')+;
 
 // Common
 fragment Cardinal: ('N' | 'E' | 'W' | 'S');

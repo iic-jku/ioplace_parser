@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from enum import IntEnum
-from typing import Optional, Dict, List, Union
+from typing import Literal, Optional, Dict, List, Union
 from decimal import Decimal
 import warnings
 
@@ -45,7 +45,7 @@ STANDALONE_ANNOTATIONS = [
 
 
 class myListener(ioListener):
-    sides: Dict[str, Side]
+    sides: Dict[Literal["N", "E", "W", "S"], Side]
     current_side: Optional[Side] = None
     global_sort_mode: Order = Order.busMajor
     global_min_distance: Optional[Decimal] = None
@@ -71,7 +71,8 @@ class myListener(ioListener):
                 reverse_result=len(direction) == 2,
                 sort_mode=self.global_sort_mode,
             )
-            self.sides[direction[0]] = self.current_side
+            side: Literal["N", "E", "W", "S"] = direction[0]  # type: ignore
+            self.sides[side] = self.current_side
 
     def exitRegex(self, ctx: ioParser.RegexContext):
         if self.current_side is None:
@@ -121,13 +122,22 @@ class myListener(ioListener):
         raise ValueError(f"Syntax Error at {line}:{charPositionInLine}: {msg}")
 
 
-def parse(string: str):
+def parse(string: str) -> Dict[Literal["N", "E", "W", "S"], Side]:
+    """
+    Parses a pin configuration into a dictionary of the four cardinal sides.
+
+    :param string: The input configuration as a string (not a file path)
+    :returns: A dictionary where each cardinal direction points to a Side object.
+    :raises ValueError: On syntax or token recognition errors
+    """
+    listener = myListener()
+
     stream = InputStream(string)
 
     lexer = ioLexer(stream)
-    token_stream = CommonTokenStream(lexer)
+    lexer.addErrorListener(listener)
 
-    listener = myListener()
+    token_stream = CommonTokenStream(lexer)
 
     parser = ioParser(token_stream)
     parser.addErrorListener(listener)
@@ -137,7 +147,8 @@ def parse(string: str):
     ParseTreeWalker.DEFAULT.walk(listener, tree)
 
     sides_info = listener.sides
-    for side in ["N", "E", "W", "S"]:
+    sides: List[Literal["N", "E", "W", "S"]] = ["N", "E", "W", "S"]
+    for side in sides:
         if side in sides_info:
             continue
         sides_info[side] = Side(

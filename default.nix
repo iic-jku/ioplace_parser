@@ -4,6 +4,8 @@
   lib,
   nix-gitignore,
   buildPythonPackage,
+  pytest,
+  coverage,
 }:
 
 let
@@ -29,18 +31,21 @@ in buildPythonPackage rec {
   version = builtins.head version_list;
 
   src = nix-gitignore.gitignoreSourcePure ./.gitignore ./.;
-
-  doCheck = false;
+  
   PIP_DISABLE_PIP_VERSION_CHECK = "1";
 
   nativeBuildInputs = [
     antlr4_10
     black
   ];
+  
+  nativeCheckInputs = [
+    pytest
+    coverage
+  ];
 
-  preBuild = ''
-    make antlr
-  '';
+  preBuild = "make antlr";
+  checkPhase = "pytest";
 
   propagatedBuildInputs = [
     antlr4_10-python3-runtime
