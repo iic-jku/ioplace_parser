@@ -4,6 +4,8 @@
   lib,
   nix-gitignore,
   buildPythonPackage,
+  poetry-core,
+  setuptools,
   pytest,
   coverage,
 }:
@@ -23,31 +25,28 @@ let
       license = licenses.bsd3;
     };
   };
-in buildPythonPackage rec {
+in buildPythonPackage {
   name = "ioplace_parser";
-
-  version_file = builtins.readFile ./ioplace_parser/__version__.py;
-  version_list = builtins.match ''.+''\n__version__ = "([^"]+)"''\n.+''$'' version_file;
-  version = builtins.head version_list;
+  version = (builtins.fromTOML (builtins.readFile ./pyproject.toml)).tool.poetry.version;
+  format = "pyproject";
 
   src = nix-gitignore.gitignoreSourcePure ./.gitignore ./.;
   
-  PIP_DISABLE_PIP_VERSION_CHECK = "1";
-
   nativeBuildInputs = [
+    poetry-core
     antlr4_10
-    black
+  ];
+
+  propagatedBuildInputs = [
+    antlr4_10-python3-runtime
   ];
   
   nativeCheckInputs = [
     pytest
+    black
     coverage
   ];
 
   preBuild = "make antlr";
   checkPhase = "pytest";
-
-  propagatedBuildInputs = [
-    antlr4_10-python3-runtime
-  ];
 }
