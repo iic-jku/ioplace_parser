@@ -23,7 +23,8 @@ venv/manifest.txt: pyproject.toml
 	$(PYTHON3) -m venv ./venv
 	PYTHONPATH= ./venv/bin/python3 -m pip install --upgrade pip
 	PYTHONPATH= ./venv/bin/python3 -m pip install --upgrade wheel poetry poetry-plugin-export
-	PYTHONPATH= ./venv/bin/python3 -m pip install --upgrade -r <(./venv/bin/poetry export --with dev --without-hashes --format=requirements.txt)
+	PYTHONPATH= ./venv/bin/poetry export --with dev --without-hashes --format=requirements.txt --output=requirements_tmp.txt
+	PYTHONPATH= ./venv/bin/python3 -m pip install --upgrade -r requirements_tmp.txt
 	PYTHONPATH= ./venv/bin/python3 -m pip freeze > $@
 
 
