@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ioplace_parser"
-version = "0.3.0"
+version = "0.3.0-1"
 description = "Antlr4-based parser for the OpenLane I/O Placement script"
 readme = "Readme.md"
 authors = ["Efabless Corporation <donn@efabless.com>"]
@@ -19,7 +19,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-antlr4-python3-runtime = "~=4.10.0"
+antlr4-python3-runtime = "~=4.9.*"
 
 [tool.poetry.dev-dependencies]
 wheel = "^0.38"
