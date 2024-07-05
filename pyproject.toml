@@ -23,7 +23,7 @@ antlr4-python3-runtime = "~=4.10.0"
 
 [tool.poetry.dev-dependencies]
 wheel = "^0.38"
-black = "^22.3.0"
+black = "^24.3.0"
 flake8 = "^4.0.1"
 mypy = "^0.931"
 
