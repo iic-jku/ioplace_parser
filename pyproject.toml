@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ioplace_parser"
-version = "0.3.0-1"
+version = "0.3.1"
 description = "Antlr4-based parser for the OpenLane I/O Placement script"
 readme = "Readme.md"
 authors = ["Efabless Corporation <donn@efabless.com>"]
